@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashService } from './helper/hash.service';
+import { PhoneModule } from './phone/phone.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HashService } from './helper/hash.service';
       synchronize: true,
     }),
     UsersModule,
+    PhoneModule,
   ],
   controllers: [AppController],
   providers: [AppService, HashService],
