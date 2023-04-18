@@ -23,6 +23,14 @@ export class UsersService {
     return this.userRepository.find();
   }
 
+  findOne(email: string) {
+    return this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+  }
+
   async registerUser(user: RegisterDto) {
     try {
       const { password, name, email } = user;

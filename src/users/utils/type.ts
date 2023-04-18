@@ -9,3 +9,8 @@ export interface UpdateUser {
   email?: string;
   role?: Role;
 }
+
+// export interface LoginCredential {
+//   email: string;
+//   password: string;
+// }

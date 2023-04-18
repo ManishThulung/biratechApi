@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HashService } from './helper/hash.service';
 import { PhoneModule } from './phone/phone.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PhoneModule } from './phone/phone.module';
     }),
     UsersModule,
     PhoneModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, HashService],
