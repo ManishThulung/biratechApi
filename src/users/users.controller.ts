@@ -6,16 +6,23 @@ import {
   Param,
   Post,
   Put,
+  Request,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterDto } from './dto/user.dto';
 import { UpdateUser } from './utils/type';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   getUsers() {
@@ -26,6 +33,16 @@ export class UsersController {
   @Post()
   createUser(@Body() user: RegisterDto) {
     return this.usersService.registerUser(user);
+  }
+
+  @UseGuards(AuthGuard('local'))
+  @Post('/login')
+  async login(@Request() req) {
+    const result = await this.authService.login(req.user);
+    const token = {
+      access_token: result.access_token,
+    };
+    return token;
   }
 
   @Put(':id')
