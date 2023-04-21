@@ -1,4 +1,5 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 export class phoneDto {
   @IsNotEmpty()
@@ -20,4 +21,6 @@ export class phoneDto {
   @IsNotEmpty()
   @MinLength(3)
   memory: string;
+
+  author: UserEntity;
 }

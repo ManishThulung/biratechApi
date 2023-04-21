@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   Put,
+  Request,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { PhoneService } from './phone.service';
 import { phoneDto } from './dto/phone.dto';
+import { JwtGuard } from 'src/auth/jwt.guard';
 
 @Controller('phones')
 export class PhoneController {
@@ -22,9 +25,10 @@ export class PhoneController {
   }
 
   @UsePipes(new ValidationPipe())
-  @Post()
-  addPhone(@Body() phone: phoneDto) {
-    return this.phoneService.newPhone(phone);
+  @UseGuards(JwtGuard)
+  @Post('/create')
+  addPhone(@Body() phone: phoneDto, @Request() req) {
+    return this.phoneService.newPhone(phone, req.user);
   }
 
   @Put(':id')
