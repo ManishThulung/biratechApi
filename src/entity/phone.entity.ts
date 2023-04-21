@@ -21,6 +21,6 @@ export class PhoneEntity {
   @Column()
   battery: string;
 
-  // @ManyToOne(() => UserEntity, (user) => user.phones)
-  // user: UserEntity;
+  @ManyToOne(() => UserEntity, (user) => user.phones)
+  author: UserEntity;
 }

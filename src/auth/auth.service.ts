@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { HashService } from 'src/helper/hash.service';
 import { UsersService } from 'src/users/users.service';
@@ -41,13 +37,14 @@ export class AuthService {
     const payload = {
       email: user.email,
       id: user.id,
-      roleId: user.roleId,
+      role: user.role,
     };
+
     return {
       access_token: this.jwtService.sign(payload, {
         secret: process.env.ACCESS_TOKEN_SECRET,
       }),
-      roleId: user.roleId,
+      role: user.role,
     };
   }
 }

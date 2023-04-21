@@ -19,6 +19,6 @@ export class UserEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  // @OneToMany(() => PhoneEntity, (phone) => phone.user)
-  // phones: PhoneEntity[];
+  @OneToMany(() => PhoneEntity, (phone) => phone.author)
+  phones: PhoneEntity[];
 }

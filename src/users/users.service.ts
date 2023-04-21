@@ -23,6 +23,15 @@ export class UsersService {
     return this.userRepository.find();
   }
 
+  getUserById(id: number) {
+    return this.userRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['phones'],
+    });
+  }
+
   findOne(email: string) {
     return this.userRepository.findOne({
       where: {

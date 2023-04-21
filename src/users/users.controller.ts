@@ -29,9 +29,14 @@ export class UsersController {
     return this.usersService.getUsers();
   }
 
+  @Get(':id')
+  getUserById(@Param('id') id: number) {
+    return this.usersService.getUserById(id);
+  }
+
   @UsePipes(new ValidationPipe())
   @Post()
-  createUser(@Body() user: RegisterDto) {
+  registerUser(@Body() user: RegisterDto) {
     return this.usersService.registerUser(user);
   }
 
