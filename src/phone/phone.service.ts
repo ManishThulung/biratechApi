@@ -18,6 +18,15 @@ export class PhoneService {
     return this.phoneRepository.find();
   }
 
+  getPhoneById(id: number) {
+    return this.phoneRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['author'],
+    });
+  }
+
   async newPhone(phone: phoneDto, user: any) {
     const { email } = user;
 
@@ -63,7 +72,7 @@ export class PhoneService {
       });
       if (!phone) throw new UnprocessableEntityException('Phone not found!');
       await this.phoneRepository.delete(id);
-      return 'Phone added seccessfully';
+      return 'Phone deleted seccessfully';
     } catch (error) {
       throw new UnprocessableEntityException();
     }
