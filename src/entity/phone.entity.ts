@@ -1,5 +1,13 @@
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ReviewEntity } from './review.entity';
 
 @Entity('phones')
 export class PhoneEntity {
@@ -20,6 +28,10 @@ export class PhoneEntity {
 
   @Column()
   battery: string;
+
+  @OneToOne(() => ReviewEntity)
+  @JoinColumn()
+  review: ReviewEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.phones)
   author: UserEntity;
