@@ -1,4 +1,5 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
+import { ReviewEntity } from 'src/entity/review.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 
 export class phoneDto {
@@ -23,4 +24,6 @@ export class phoneDto {
   memory: string;
 
   author: UserEntity;
+
+  review: ReviewEntity;
 }

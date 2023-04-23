@@ -23,7 +23,7 @@ export class PhoneService {
       where: {
         id,
       },
-      relations: ['author'],
+      relations: ['author', 'review'],
     });
   }
 

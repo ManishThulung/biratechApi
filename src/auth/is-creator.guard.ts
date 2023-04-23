@@ -30,7 +30,13 @@ export class IsCreatorGuard implements CanActivate {
 
     const existUser = await this.usersService.getUserById(userId);
     const existPhone = await this.phoneService.getPhoneById(phoneId);
+    // console.log(existPhone, 'existPhone');
 
+    // for review -> this id gives the review id, if u r not a creator of phone u cannot update the review
+    if (!existPhone)
+      throw new UnauthorizedException(
+        'You are not authorized to access this resource',
+      );
     if (existUser.id !== existPhone.author.id)
       throw new UnauthorizedException(
         'You are not authorized to access this resource',
