@@ -8,6 +8,8 @@ import { HashService } from './helper/hash.service';
 import { PhoneModule } from './phone/phone.module';
 import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
+import { ImageuploadService } from './imageupload/imageupload.service';
+import { ImageuploadModule } from './imageupload/imageupload.module';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { ReviewModule } from './review/review.module';
     PhoneModule,
     AuthModule,
     ReviewModule,
+    ImageuploadModule,
   ],
   controllers: [AppController],
-  providers: [AppService, HashService],
+  providers: [AppService, HashService, ImageuploadService],
 })
 export class AppModule {}

@@ -26,6 +26,16 @@ export class PhoneService {
       relations: ['author', 'review'],
     });
   }
+  async comparePhone(phoneOne: string, phoneTwo: string) {
+    const phone1 = await this.phoneRepository.findOne({
+      where: { name: phoneOne },
+    });
+    const phone2 = await this.phoneRepository.findOne({
+      where: { name: phoneTwo },
+    });
+
+    return { phone1, phone2 };
+  }
 
   async newPhone(phone: phoneDto, user: any) {
     const { email } = user;
@@ -38,6 +48,7 @@ export class PhoneService {
       });
 
       phone.author = userDetail;
+      // phone.photo = imageuploadUrl;
 
       await this.phoneRepository.save(phone);
       return 'Phone added successfully';

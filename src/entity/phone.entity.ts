@@ -29,6 +29,9 @@ export class PhoneEntity {
   @Column()
   battery: string;
 
+  @Column({ nullable: true })
+  photo: string;
+
   @OneToOne(() => ReviewEntity)
   @JoinColumn()
   review: ReviewEntity;
