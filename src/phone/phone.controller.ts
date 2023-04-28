@@ -6,8 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -18,27 +21,72 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { HasRoles } from 'src/auth/has-roles.decorator';
 import { Role } from 'src/users/utils/role.enum';
 import { IsCreatorGuard } from 'src/auth/is-creator.guard';
-import { ReviewDto } from 'src/review/dto/review.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageuploadService } from 'src/imageupload/imageupload.service';
+import { FilterQueryValidate, QueryValidate } from 'src/utils/phone.type';
 
 @Controller('phones')
 export class PhoneController {
-  constructor(private readonly phoneService: PhoneService) {}
+  constructor(
+    private readonly phoneService: PhoneService,
+    private readonly imageUploadService: ImageuploadService,
+  ) {}
 
   @Get()
   getPhones() {
     return this.phoneService.getPhones();
   }
 
+  // @Get('/search')
+  // filterPhone(@Query() phone: FilterQueryValidate) {
+  //   const {
+  //     company = '',
+  //     name = '',
+  //     storage = '',
+  //     ram = '',
+  //     battery = '',
+  //     camera = '',
+  //     price = [10000, 60000],
+  //   } = phone;
+  //   return this.phoneService.filterPhone(
+  //     company,
+  //     name,
+  //     storage,
+  //     ram,
+  //     battery,
+  //     camera,
+  //     price,
+  //   );
+  // }
+
+  @Get('/compare')
+  comparePhone(@Query() phones: QueryValidate) {
+    const { phoneOne, phoneTwo } = phones;
+
+    return this.phoneService.comparePhone(phoneOne, phoneTwo);
+  }
+
   @Get(':id')
   getPhoneById(@Param('id') id: number) {
     return this.phoneService.getPhoneById(id);
   }
+  // @Post('/upload')
+  // @UseInterceptors(FileInterceptor('file'))
+  // uploadFile(@UploadedFile() file: Express.Multer.File) {
+  //   console.log(file);
+  // }
+  // comment
 
   @HasRoles(Role.ADMIN, Role.CREATOR)
   @UseGuards(JwtGuard, RolesGuard)
   @UsePipes(new ValidationPipe())
   @Post('/create')
-  addPhone(@Body() phone: phoneDto, @Request() req) {
+  async addPhone(@Body() phone: phoneDto, @Request() req) {
+    // const imageuploadUrl = await this.imageUploadService.uploadImage(
+    //   file?.path,
+    // );
+    // console.log(imageuploadUrl, 'imageuploadUrl');
+
     return this.phoneService.newPhone(phone, req.user);
   }
 
