@@ -23,7 +23,7 @@ import { Role } from 'src/users/utils/role.enum';
 import { IsCreatorGuard } from 'src/auth/is-creator.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageuploadService } from 'src/imageupload/imageupload.service';
-import { QueryValidate } from 'src/utils/phone.type';
+import { FilterQueryValidate, QueryValidate } from 'src/utils/phone.type';
 
 @Controller('phones')
 export class PhoneController {
@@ -36,6 +36,28 @@ export class PhoneController {
   getPhones() {
     return this.phoneService.getPhones();
   }
+
+  // @Get('/search')
+  // filterPhone(@Query() phone: FilterQueryValidate) {
+  //   const {
+  //     company = '',
+  //     name = '',
+  //     storage = '',
+  //     ram = '',
+  //     battery = '',
+  //     camera = '',
+  //     price = [10000, 60000],
+  //   } = phone;
+  //   return this.phoneService.filterPhone(
+  //     company,
+  //     name,
+  //     storage,
+  //     ram,
+  //     battery,
+  //     camera,
+  //     price,
+  //   );
+  // }
 
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {
