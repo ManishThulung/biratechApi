@@ -26,6 +26,19 @@ export class PhoneService {
       relations: ['author', 'review'],
     });
   }
+
+  // async filterPhone(
+  //   company: string,
+  //   name: string,
+  //   storage: string,
+  //   ram: string,
+  //   battery: string,
+  //   camera: string,
+  //   price: [number, number],
+  // ) {
+  //   return { company, name, price };
+  // }
+
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({
       where: { name: phoneOne },
