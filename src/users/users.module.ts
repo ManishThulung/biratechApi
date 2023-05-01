@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../entity/user.entity';
 import { HashService } from 'src/helper/hash.service';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalStrategy } from 'src/auth/local.strategy';

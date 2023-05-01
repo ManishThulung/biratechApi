@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
 import { Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/entity/user.entity';
 
 @Injectable()
 export class PhoneService {
@@ -27,6 +27,36 @@ export class PhoneService {
     });
   }
 
+  // binary search
+  // async getPhoneById(id: number): Promise<PhoneEntity | undefined> {
+  //   let left = 0;
+  //   let right = (await this.phoneRepository.count()) - 1;
+  //   console.log(right);
+
+  //   while (left <= right) {
+  //     const middle = Math.floor((left + right) / 2);
+
+  //     const phone = await this.phoneRepository.findOne({
+  //       where: {
+  //         id: middle,
+  //       },
+  //       relations: ['author', 'review'],
+  //     });
+
+  //     if (phone && phone.id === id) {
+  //       return phone;
+  //     } else if (phone && phone.id < id) {
+  //       left = middle + 1;
+  //     } else {
+  //       right = middle - 1;
+  //     }
+  //   }
+
+  //   // return 'Phone not found!';
+  //   return undefined;
+  // }
+
+  // phone filter/search
   // async filterPhone(
   //   company: string,
   //   name: string,
