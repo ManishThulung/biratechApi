@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserEntity } from './user.entity';
 
 @Entity('user_preference')
 export class UserPreferenceEntity {
@@ -19,4 +26,8 @@ export class UserPreferenceEntity {
 
   @Column({ nullable: true })
   battery: Array<string>;
+
+  @OneToOne(() => UserEntity)
+  @JoinColumn()
+  user: UserEntity;
 }

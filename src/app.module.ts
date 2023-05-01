@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
 import { ImageuploadService } from './imageupload/imageupload.service';
 import { ImageuploadModule } from './imageupload/imageupload.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ImageuploadModule } from './imageupload/imageupload.module';
     AuthModule,
     ReviewModule,
     ImageuploadModule,
+    RecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService, HashService, ImageuploadService],
