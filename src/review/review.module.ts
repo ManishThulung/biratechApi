@@ -6,7 +6,7 @@ import { ReviewEntity } from 'src/entity/review.entity';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { IsCreatorGuard } from 'src/auth/is-creator.guard';
 import { UsersService } from 'src/users/users.service';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/entity/user.entity';
 import { UsersModule } from 'src/users/users.module';
 import { HashService } from 'src/helper/hash.service';
 import { PhoneService } from 'src/phone/phone.service';

@@ -4,7 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import { HashService } from 'src/helper/hash.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/entity/user.entity';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtGuard } from './jwt.guard';
