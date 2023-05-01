@@ -1,6 +1,6 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
 import { ReviewEntity } from 'src/entity/review.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/entity/user.entity';
 
 export class phoneDto {
   @IsNotEmpty()

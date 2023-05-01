@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
 import { Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/entity/user.entity';
 
 @Injectable()
 export class PhoneService {
