@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { PhoneEntity } from './phone.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('reviews')
 export class ReviewEntity {
@@ -14,8 +7,4 @@ export class ReviewEntity {
 
   @Column({ nullable: true })
   review: string;
-
-  // @OneToOne(() => PhoneEntity)
-  // @JoinColumn()
-  // phone: PhoneEntity;
 }

@@ -8,9 +8,7 @@ import {
   Put,
   Query,
   Request,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -21,9 +19,10 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { HasRoles } from 'src/auth/has-roles.decorator';
 import { Role } from 'src/users/utils/role.enum';
 import { IsCreatorGuard } from 'src/auth/is-creator.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageuploadService } from 'src/imageupload/imageupload.service';
-import { FilterQueryValidate, QueryValidate } from 'src/utils/phone.type';
+import { Phone, QueryValidate } from 'src/utils/phone.type';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { Observable } from 'rxjs';
 
 @Controller('phones')
 export class PhoneController {
@@ -37,27 +36,36 @@ export class PhoneController {
     return this.phoneService.getPhones();
   }
 
-  // @Get('/search')
-  // filterPhone(@Query() phone: FilterQueryValidate) {
-  //   const {
-  //     company = '',
-  //     name = '',
-  //     storage = '',
-  //     ram = '',
-  //     battery = '',
-  //     camera = '',
-  //     price = [10000, 60000],
-  //   } = phone;
-  //   return this.phoneService.filterPhone(
-  //     company,
-  //     name,
-  //     storage,
-  //     ram,
-  //     battery,
-  //     camera,
-  //     price,
-  //   );
-  // }
+  @Get('/search')
+  paginateFilter(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('name') name?: string | '',
+    @Query('company') company?: string | '',
+    @Query('memory') memory?: string | '',
+    // @Query('battery') battery: string | '',
+    // @Query('camera') camera: string | '',
+    @Query('price') price?: number | 20000,
+  ): Observable<Pagination<Phone>> {
+    limit = limit > 50 ? 50 : limit;
+
+    if (name === null || name === undefined) {
+      return this.phoneService.paginate({
+        page: Number(page),
+        limit: Number(limit),
+        route: 'http://localhost:3000/api/phones/search',
+      });
+    } else {
+      return this.phoneService.paginateFilterMultipleQueries(
+        {
+          page: Number(page),
+          limit: Number(limit),
+          route: 'http://localhost:4000/api/phones/search',
+        },
+        { name, memory, company, price },
+      );
+    }
+  }
 
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {

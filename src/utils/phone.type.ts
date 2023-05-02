@@ -1,3 +1,14 @@
+export type Phone = {
+  id?: number;
+  name?: string;
+  company?: string;
+  camera?: string;
+  memory?: string;
+  battery?: string;
+  photo?: string | null;
+  price?: number;
+};
+
 export type QueryValidate = {
   phoneOne: string;
   phoneTwo: string;

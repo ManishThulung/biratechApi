@@ -1,9 +1,17 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
+import {
+  Pagination,
+  IPaginationOptions,
+  paginate,
+} from 'nestjs-typeorm-paginate';
+import { Phone } from 'src/utils/phone.type';
+import { Observable, from, map } from 'rxjs';
+import { MoreThanOrEqual } from 'typeorm';
 
 @Injectable()
 export class PhoneService {
@@ -16,6 +24,67 @@ export class PhoneService {
 
   getPhones() {
     return this.phoneRepository.find();
+  }
+
+  // async paginate(
+  //   options: IPaginationOptions,
+  // ): Promise<Pagination<PhoneEntity>> {
+  //   return paginate<PhoneEntity>(this.phoneRepository, options);
+  // }
+  paginate(options: IPaginationOptions): Observable<Pagination<Phone>> {
+    return from(paginate<PhoneEntity>(this.phoneRepository, options));
+  }
+
+  paginateFilterMultipleQueries(
+    options: IPaginationOptions,
+    phone: Phone,
+  ): Observable<Pagination<Phone>> {
+    const pageNumber = Number(options.page) - 1;
+    const minPrice = Number(phone.price);
+    return from(
+      this.phoneRepository.findAndCount({
+        skip: pageNumber * Number(options.limit) || 0,
+        take: Number(options.limit) || 10,
+        order: { id: 'ASC' },
+        // select: ['id', 'name', 'battery', 'camera', 'memory'],
+        where: [
+          {
+            name: ILike(`%${phone.name}%`),
+            memory: ILike(`%${phone.memory}%`),
+            company: ILike(`%${phone.company}%`),
+            price: MoreThanOrEqual(minPrice),
+            // battery: ILike(`%${phone.battery}%`),
+            // camera: ILike(`%${phone.camera}%`),
+          },
+        ],
+      }),
+    ).pipe(
+      map(([phones, totalUsers]) => {
+        const phonesPageable: Pagination<Phone> = {
+          items: phones,
+          links: {
+            first: options.route + `?limit=${options.limit}`,
+            previous: options.route + ``,
+            next:
+              options.route +
+              `?limit=${options.limit}&page=${Number(options.page) + 1}`,
+            last:
+              options.route +
+              `?limit=${options.limit}&page=${Math.ceil(
+                totalUsers / Number(options.limit),
+              )}`,
+          },
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: phones.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalUsers,
+            totalPages: Math.ceil(totalUsers / Number(options.limit)),
+          },
+        };
+        return phonesPageable;
+      }),
+    );
   }
 
   getPhoneById(id: number) {
@@ -54,19 +123,6 @@ export class PhoneService {
 
   //   // return 'Phone not found!';
   //   return undefined;
-  // }
-
-  // phone filter/search
-  // async filterPhone(
-  //   company: string,
-  //   name: string,
-  //   storage: string,
-  //   ram: string,
-  //   battery: string,
-  //   camera: string,
-  //   price: [number, number],
-  // ) {
-  //   return { company, name, price };
   // }
 
   async comparePhone(phoneOne: string, phoneTwo: string) {
