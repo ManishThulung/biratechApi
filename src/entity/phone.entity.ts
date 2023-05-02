@@ -29,6 +29,9 @@ export class PhoneEntity {
   @Column()
   battery: string;
 
+  @Column()
+  price: number;
+
   @Column({ nullable: true })
   photo: string;
 
