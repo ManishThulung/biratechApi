@@ -7,6 +7,7 @@ export type Phone = {
   battery?: string;
   photo?: string | null;
   price?: number;
+  releaseDate?: Date;
 };
 
 export type QueryValidate = {

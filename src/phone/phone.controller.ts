@@ -67,6 +67,11 @@ export class PhoneController {
     }
   }
 
+  @Get('/upcomming')
+  upcommingPhones() {
+    return this.phoneService.upcommingPhones();
+  }
+
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {
     const { phoneOne, phoneTwo } = phones;

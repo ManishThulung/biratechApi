@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, MoreThan, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
 import {
@@ -124,6 +124,16 @@ export class PhoneService {
   //   // return 'Phone not found!';
   //   return undefined;
   // }
+
+  async upcommingPhones(): Promise<Phone[]> {
+    const phones = await this.phoneRepository.find({
+      where: {
+        releaseDate: MoreThan(new Date()),
+      },
+    });
+
+    return phones;
+  }
 
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({

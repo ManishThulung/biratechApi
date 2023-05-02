@@ -32,6 +32,9 @@ export class PhoneEntity {
   @Column()
   price: number;
 
+  @Column({ name: 'release_date', nullable: true })
+  releaseDate: Date;
+
   @Column({ nullable: true })
   photo: string;
 
