@@ -9,7 +9,6 @@ import { PhoneModule } from './phone/phone.module';
 import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
 import { ImageuploadService } from './imageupload/imageupload.service';
-import { ImageuploadModule } from './imageupload/imageupload.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
@@ -29,7 +28,6 @@ import { RecommendationModule } from './recommendation/recommendation.module';
     PhoneModule,
     AuthModule,
     ReviewModule,
-    ImageuploadModule,
     RecommendationModule,
   ],
   controllers: [AppController],

@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, MoreThan, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
 import {
@@ -125,6 +125,16 @@ export class PhoneService {
   //   return undefined;
   // }
 
+  async upcommingPhones(): Promise<Phone[]> {
+    const phones = await this.phoneRepository.find({
+      where: {
+        releaseDate: MoreThan(new Date()),
+      },
+    });
+
+    return phones;
+  }
+
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({
       where: { name: phoneOne },
@@ -136,19 +146,16 @@ export class PhoneService {
     return { phone1, phone2 };
   }
 
-  async newPhone(phone: phoneDto, user: any) {
+  async newPhone(phone: phoneDto, user: any, imageuploadUrl: string) {
     const { email } = user;
-
     try {
       const userDetail = await this.userRepository.findOne({
         where: {
           email,
         },
       });
-
       phone.author = userDetail;
-      // phone.photo = imageuploadUrl;
-
+      phone.photo = imageuploadUrl;
       await this.phoneRepository.save(phone);
       return 'Phone added successfully';
     } catch (error) {

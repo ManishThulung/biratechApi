@@ -23,7 +23,7 @@ export class phoneDto {
   @MinLength(3)
   memory: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   photo: string;
 
   author: UserEntity;

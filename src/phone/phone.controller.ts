@@ -8,7 +8,9 @@ import {
   Put,
   Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -23,6 +25,7 @@ import { ImageuploadService } from 'src/imageupload/imageupload.service';
 import { Phone, QueryValidate } from 'src/utils/phone.type';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('phones')
 export class PhoneController {
@@ -67,6 +70,11 @@ export class PhoneController {
     }
   }
 
+  @Get('/upcomming')
+  upcommingPhones() {
+    return this.phoneService.upcommingPhones();
+  }
+
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {
     const { phoneOne, phoneTwo } = phones;
@@ -87,15 +95,19 @@ export class PhoneController {
 
   @HasRoles(Role.ADMIN, Role.CREATOR)
   @UseGuards(JwtGuard, RolesGuard)
+  @UseInterceptors(FileInterceptor('file'))
   @UsePipes(new ValidationPipe())
-  @Post('/create')
-  async addPhone(@Body() phone: phoneDto, @Request() req) {
-    // const imageuploadUrl = await this.imageUploadService.uploadImage(
-    //   file?.path,
-    // );
-    // console.log(imageuploadUrl, 'imageuploadUrl');
-
-    return this.phoneService.newPhone(phone, req.user);
+  @Post('create')
+  async addPhone(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() phone: phoneDto,
+    @Request() req,
+  ) {
+    const imageuploadUrl = await this.imageUploadService.uploadImage(
+      file?.path,
+    );
+    console.log(imageuploadUrl, 'imageuploadUrl');
+    return this.phoneService.newPhone(phone, req.user, imageuploadUrl);
   }
 
   @UseGuards(JwtGuard, IsCreatorGuard)
