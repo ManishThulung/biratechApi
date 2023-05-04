@@ -146,19 +146,16 @@ export class PhoneService {
     return { phone1, phone2 };
   }
 
-  async newPhone(phone: phoneDto, user: any) {
+  async newPhone(phone: phoneDto, user: any, imageuploadUrl: string) {
     const { email } = user;
-
     try {
       const userDetail = await this.userRepository.findOne({
         where: {
           email,
         },
       });
-
       phone.author = userDetail;
-      // phone.photo = imageuploadUrl;
-
+      phone.photo = imageuploadUrl;
       await this.phoneRepository.save(phone);
       return 'Phone added successfully';
     } catch (error) {
