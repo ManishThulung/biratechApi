@@ -9,6 +9,7 @@ import { UsersService } from 'src/users/users.service';
 import { HashService } from 'src/helper/hash.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ImageuploadService } from 'src/imageupload/imageupload.service';
+import { MailService } from 'src/mail/mail.service';
 @Module({
   imports: [
     MulterModule.register({
@@ -23,6 +24,7 @@ import { ImageuploadService } from 'src/imageupload/imageupload.service';
     UsersService,
     HashService,
     ImageuploadService,
+    MailService,
   ],
 })
 export class PhoneModule {}

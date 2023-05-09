@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterDto } from './dto/user.dto';
 import { HashService } from 'src/helper/hash.service';
 import { UpdateUser } from './utils/type';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,7 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly hashService: HashService,
+    private readonly mailService: MailService,
   ) {}
 
   getUsers() {
@@ -46,7 +48,12 @@ export class UsersService {
 
       const hashPassword = await this.hashService.hashPassword(password);
 
-      await this.userRepository.save({ password: hashPassword, name, email });
+      console.log(user, 'before save userService');
+
+      // await this.userRepository.save({ password: hashPassword, name, email });
+      console.log(user, 'userService');
+
+      await this.mailService.sendUserConfirmation(user, 'tosdfsdfken');
       return 'User Registered';
     } catch (error) {
       throw new HttpException('Error occurred!', HttpStatus.BAD_REQUEST);

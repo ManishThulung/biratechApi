@@ -35,8 +35,10 @@ export class UsersController {
   }
 
   @UsePipes(new ValidationPipe())
-  @Post()
+  @Post('/register')
   registerUser(@Body() user: RegisterDto) {
+    console.log(user, 'userController');
+
     return this.usersService.registerUser(user);
   }
 

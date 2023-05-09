@@ -7,9 +7,11 @@ import { HashService } from 'src/helper/hash.service';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalStrategy } from 'src/auth/local.strategy';
 import { JwtService } from '@nestjs/jwt';
+import { MailModule } from 'src/mail/mail.module';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [MailModule, TypeOrmModule.forFeature([UserEntity])],
   controllers: [UsersController],
   providers: [
     UsersService,
@@ -17,6 +19,7 @@ import { JwtService } from '@nestjs/jwt';
     JwtService,
     AuthService,
     LocalStrategy,
+    MailService,
   ],
   // exports: [UsersService, HashService],
 })

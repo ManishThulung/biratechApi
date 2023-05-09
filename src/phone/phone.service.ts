@@ -130,6 +130,9 @@ export class PhoneService {
       where: {
         releaseDate: MoreThan(new Date()),
       },
+      order: {
+        releaseDate: 'ASC',
+      },
     });
 
     return phones;
