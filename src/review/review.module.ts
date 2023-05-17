@@ -11,10 +11,18 @@ import { UsersModule } from 'src/users/users.module';
 import { HashService } from 'src/helper/hash.service';
 import { PhoneService } from 'src/phone/phone.service';
 import { PhoneEntity } from 'src/entity/phone.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ReviewEntity, UserEntity, PhoneEntity])],
   controllers: [ReviewController],
-  providers: [ReviewService, JwtGuard, UsersService, HashService, PhoneService],
+  providers: [
+    ReviewService,
+    JwtGuard,
+    UsersService,
+    HashService,
+    PhoneService,
+    MailService,
+  ],
 })
 export class ReviewModule {}

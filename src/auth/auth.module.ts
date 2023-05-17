@@ -9,6 +9,7 @@ import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt.strategy';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
@@ -16,8 +17,8 @@ import { JwtStrategy } from './jwt.strategy';
       secret: process.env.ACCESS_TOKEN_SECRET,
       signOptions: { expiresIn: '3600s' },
     }),
-    PassportModule,
     TypeOrmModule.forFeature([UserEntity]),
+    PassportModule,
   ],
   providers: [
     AuthService,
@@ -27,6 +28,7 @@ import { JwtStrategy } from './jwt.strategy';
     LocalStrategy,
     JwtGuard,
     JwtStrategy,
+    MailService,
   ],
   exports: [AuthService],
 })
