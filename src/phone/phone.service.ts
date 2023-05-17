@@ -133,17 +133,48 @@ export class PhoneService {
       order: {
         releaseDate: 'ASC',
       },
+      relations: ['review'],
     });
 
     return phones;
   }
 
+  async gamingPhones(): Promise<Phone[]> {
+    return await this.phoneRepository.find({
+      where: {
+        isGaming: true,
+      },
+      relations: ['review'],
+    });
+  }
+
+  async trendingPhones(): Promise<Phone[]> {
+    const phones = await this.phoneRepository.find({ relations: ['ratings'] });
+
+    const trendingPhones: Phone[] = phones.map((phone): Phone => {
+      const totalRatings = phone.ratings.length;
+      const sumOfRatings = phone.ratings.reduce(
+        (accumulator, rating) => accumulator + rating.value,
+        0,
+      );
+      const overallRating = sumOfRatings / totalRatings;
+
+      if (overallRating <= 3 || isNaN(overallRating)) {
+        console.log(phone, 'phone');
+        return;
+      }
+      return phone;
+    });
+
+    return trendingPhones.filter(Boolean);
+  }
+
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({
-      where: { name: phoneOne },
+      where: { name: ILike(`%${phoneOne}%`) },
     });
     const phone2 = await this.phoneRepository.findOne({
-      where: { name: phoneTwo },
+      where: { name: ILike(`%${phoneTwo}%`) },
     });
 
     return { phone1, phone2 };

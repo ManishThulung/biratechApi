@@ -18,6 +18,15 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column({ default: false })
+  is_verified: boolean;
+
+  @Column({ nullable: true, type: 'bigint' })
+  verify_time: number;
+
+  @Column({ nullable: true })
+  verify_token: string;
+
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 

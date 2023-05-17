@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ReviewEntity } from './review.entity';
+import { RatingEntity } from './rating.entity';
 
 @Entity('phones')
 export class PhoneEntity {
@@ -32,11 +34,17 @@ export class PhoneEntity {
   @Column()
   price: number;
 
+  @Column({ name: 'is_gaming', default: false })
+  isGaming: boolean;
+
   @Column({ name: 'release_date', nullable: true })
   releaseDate: Date;
 
   @Column({ nullable: true })
   photo: string;
+
+  @OneToMany(() => RatingEntity, (rating) => rating.phone)
+  ratings: RatingEntity[];
 
   @OneToOne(() => ReviewEntity)
   @JoinColumn()

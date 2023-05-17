@@ -11,21 +11,20 @@ import { MailerModule } from '@nestjs-modules/mailer';
     MailerModule.forRootAsync({
       // imports: [ConfigModule], // import module if not enabled globally
       useFactory: async (config: ConfigService) => ({
-        // transport: config.get("MAIL_TRANSPORT"),
-        // or
         transport: {
-          host: config.get('MAIL_HOST'),
+          host: config.get('EMAIL_HOST'),
+          port: 587,
           secure: false,
           auth: {
-            user: config.get('MAIL_USER'),
-            pass: config.get('MAIL_PASSWORD'),
+            user: config.get('EMAIL_USER'),
+            pass: config.get('EMAIL_PASSWORD'),
           },
         },
         defaults: {
-          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
+          from: `"No Reply" <${config.get('EMAIL_FROM')}>`,
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname, './templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
@@ -35,6 +34,25 @@ import { MailerModule } from '@nestjs-modules/mailer';
       inject: [ConfigService],
     }),
   ],
+  // imports: [
+  //   MailerModule.forRoot({
+  //     transport: {
+  //       host: 'smtp.sendgrid.net',
+  //       secure: false,
+  //       auth: {
+  //         user: 'apikey',
+  //         pass: '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',
+  //       },
+  //     },
+  //     template: {
+  //       dir: join(__dirname, './templates'),
+  //       adapter: new HandlebarsAdapter(),
+  //       options: {
+  //         strict: true,
+  //       },
+  //     },
+  //   }),
+  // ],
   providers: [MailService],
 })
 export class MailModule {}

@@ -75,6 +75,15 @@ export class PhoneController {
     return this.phoneService.upcommingPhones();
   }
 
+  @Get('/gaming')
+  gamingPhones() {
+    return this.phoneService.gamingPhones();
+  }
+  @Get('/trending')
+  trendingPhones() {
+    return this.phoneService.trendingPhones();
+  }
+
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {
     const { phoneOne, phoneTwo } = phones;
