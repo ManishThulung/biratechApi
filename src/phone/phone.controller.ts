@@ -44,7 +44,7 @@ export class PhoneController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('name') name?: string | '',
-    @Query('company') company?: string | '',
+    // @Query('company') company?: string | '',
     @Query('memory') memory?: string | '',
     // @Query('battery') battery: string | '',
     // @Query('camera') camera: string | '',
@@ -65,7 +65,8 @@ export class PhoneController {
           limit: Number(limit),
           route: 'http://localhost:4000/api/phones/search',
         },
-        { name, memory, company, price },
+        { name, memory, price },
+        // { name, memory, company, price },
       );
     }
   }
@@ -73,6 +74,19 @@ export class PhoneController {
   @Get('/upcomming')
   upcommingPhones() {
     return this.phoneService.upcommingPhones();
+  }
+
+  @Get('/gaming')
+  gamingPhones() {
+    return this.phoneService.gamingPhones();
+  }
+  @Get('/trending')
+  trendingPhones() {
+    return this.phoneService.trendingPhones();
+  }
+  @Get('/latest')
+  latestPhones() {
+    return this.phoneService.latestPhones();
   }
 
   @Get('/compare')
@@ -106,7 +120,6 @@ export class PhoneController {
     const imageuploadUrl = await this.imageUploadService.uploadImage(
       file?.path,
     );
-    console.log(imageuploadUrl, 'imageuploadUrl');
     return this.phoneService.newPhone(phone, req.user, imageuploadUrl);
   }
 

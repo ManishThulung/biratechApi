@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { ILike, MoreThan, Repository } from 'typeorm';
+import { Between, ILike, MoreThan, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
 import {
@@ -12,6 +12,7 @@ import {
 import { Phone } from 'src/utils/phone.type';
 import { Observable, from, map } from 'rxjs';
 import { MoreThanOrEqual } from 'typeorm';
+import { CompanyEntity } from 'src/entity/company.entity';
 
 @Injectable()
 export class PhoneService {
@@ -20,6 +21,8 @@ export class PhoneService {
     private phoneRepository: Repository<PhoneEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(CompanyEntity)
+    private companyRepository: Repository<CompanyEntity>,
   ) {}
 
   getPhones() {
@@ -51,7 +54,7 @@ export class PhoneService {
           {
             name: ILike(`%${phone.name}%`),
             memory: ILike(`%${phone.memory}%`),
-            company: ILike(`%${phone.company}%`),
+            // company: ILike(`%${phone.company}%`),
             price: MoreThanOrEqual(minPrice),
             // battery: ILike(`%${phone.battery}%`),
             // camera: ILike(`%${phone.camera}%`),
@@ -92,7 +95,7 @@ export class PhoneService {
       where: {
         id,
       },
-      relations: ['author', 'review'],
+      relations: ['author', 'review', 'comments', 'comments.author'],
     });
   }
 
@@ -133,23 +136,69 @@ export class PhoneService {
       order: {
         releaseDate: 'ASC',
       },
+      relations: ['review'],
     });
 
     return phones;
   }
 
+  async gamingPhones(): Promise<Phone[]> {
+    const phones = await this.phoneRepository.find({ relations: ['review'] });
+    const gamingPhones = phones.map((phone) => {
+      const memory = Number(phone.memory.split('G')[0]);
+      if (memory < 128) {
+        return;
+      }
+      return phone;
+    });
+    return gamingPhones.filter(Boolean);
+  }
+
+  async trendingPhones(): Promise<Phone[]> {
+    const phones = await this.phoneRepository.find({ relations: ['ratings'] });
+    const trendingPhones: Phone[] = phones.map((phone): Phone => {
+      const totalRatings = phone.ratings.length;
+      const sumOfRatings = phone.ratings.reduce(
+        (accumulator, rating) => accumulator + rating.value,
+        0,
+      );
+      const overallRating = sumOfRatings / totalRatings;
+      if (overallRating <= 3 || isNaN(overallRating)) {
+        console.log(phone, 'phone');
+        return;
+      }
+      return phone;
+    });
+    return trendingPhones.filter(Boolean);
+  }
+
+  async latestPhones(): Promise<Phone[] | any> {
+    const currentDate = new Date();
+    const twoMonthsAgo = new Date();
+    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+    const phones = await this.phoneRepository.find({
+      where: {
+        releaseDate: Between(twoMonthsAgo, currentDate),
+      },
+    });
+    if (phones) {
+      return phones;
+    } else {
+      return { message: 'There are no latest phones available right now' };
+    }
+  }
+
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({
-      where: { name: phoneOne },
+      where: { name: ILike(`%${phoneOne}%`) },
     });
     const phone2 = await this.phoneRepository.findOne({
-      where: { name: phoneTwo },
+      where: { name: ILike(`%${phoneTwo}%`) },
     });
-
     return { phone1, phone2 };
   }
 
-  async newPhone(phone: phoneDto, user: any, imageuploadUrl: string) {
+  async newPhone(phone: any, user: any, imageuploadUrl: string) {
     const { email } = user;
     try {
       const userDetail = await this.userRepository.findOne({
@@ -157,8 +206,14 @@ export class PhoneService {
           email,
         },
       });
+      const company = await this.companyRepository.findOne({
+        where: {
+          company: phone.company,
+        },
+      });
       phone.author = userDetail;
       phone.photo = imageuploadUrl;
+      phone.company = company;
       await this.phoneRepository.save(phone);
       return 'Phone added successfully';
     } catch (error) {

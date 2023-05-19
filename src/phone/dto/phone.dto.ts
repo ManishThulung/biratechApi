@@ -1,11 +1,12 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
+import { RatingEntity } from 'src/entity/rating.entity';
 import { ReviewEntity } from 'src/entity/review.entity';
 import { UserEntity } from 'src/entity/user.entity';
 
 export class phoneDto {
-  @IsNotEmpty()
-  @MinLength(3)
-  company: string;
+  // @IsNotEmpty()
+  // @MinLength(3)
+  // company: string;
 
   @IsNotEmpty()
   @MinLength(3)
@@ -25,6 +26,8 @@ export class phoneDto {
 
   // @IsNotEmpty()
   photo: string;
+
+  ratings?: RatingEntity[];
 
   author: UserEntity;
 

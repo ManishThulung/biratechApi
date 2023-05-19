@@ -1,13 +1,16 @@
+import { UserEntity } from 'src/entity/user.entity';
+
 export type Phone = {
   id?: number;
   name?: string;
-  company?: string;
+  // company?: string;
   camera?: string;
   memory?: string;
   battery?: string;
   photo?: string | null;
   price?: number;
   releaseDate?: Date;
+  // author: UserEntity;
 };
 
 export type QueryValidate = {

@@ -10,12 +10,19 @@ import { HashService } from 'src/helper/hash.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ImageuploadService } from 'src/imageupload/imageupload.service';
 import { MailService } from 'src/mail/mail.service';
+import { RatingEntity } from 'src/entity/rating.entity';
+import { CompanyEntity } from 'src/entity/company.entity';
 @Module({
   imports: [
     MulterModule.register({
       dest: './files',
     }),
-    TypeOrmModule.forFeature([PhoneEntity, UserEntity]),
+    TypeOrmModule.forFeature([
+      PhoneEntity,
+      UserEntity,
+      RatingEntity,
+      CompanyEntity,
+    ]),
   ],
   controllers: [PhoneController],
   providers: [

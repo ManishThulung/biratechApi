@@ -11,6 +11,9 @@ import { ReviewModule } from './review/review.module';
 import { ImageuploadService } from './imageupload/imageupload.service';
 import { RecommendationModule } from './recommendation/recommendation.module';
 import { MailModule } from './mail/mail.module';
+import { RatingModule } from './rating/rating.module';
+import { CommentModule } from './comment/comment.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { MailModule } from './mail/mail.module';
     ReviewModule,
     RecommendationModule,
     MailModule,
+    RatingModule,
+    CommentModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService, HashService, ImageuploadService],

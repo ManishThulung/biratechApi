@@ -37,9 +37,12 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   @Post('/register')
   registerUser(@Body() user: RegisterDto) {
-    console.log(user, 'userController');
-
     return this.usersService.registerUser(user);
+  }
+
+  @Get('/verify/:token')
+  verifyUser(@Param('token') token: string) {
+    return this.usersService.verifyUser(token);
   }
 
   @UseGuards(AuthGuard('local'))
