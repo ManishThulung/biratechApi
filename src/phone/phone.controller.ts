@@ -83,6 +83,10 @@ export class PhoneController {
   trendingPhones() {
     return this.phoneService.trendingPhones();
   }
+  @Get('/latest')
+  latestPhones() {
+    return this.phoneService.latestPhones();
+  }
 
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {

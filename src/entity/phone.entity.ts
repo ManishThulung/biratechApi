@@ -34,10 +34,7 @@ export class PhoneEntity {
   @Column()
   price: number;
 
-  @Column({ name: 'is_gaming', default: false })
-  isGaming: boolean;
-
-  @Column({ name: 'release_date', nullable: true })
+  @Column({ name: 'release_date', nullable: true, type: 'date' })
   releaseDate: Date;
 
   @Column({ nullable: true })
