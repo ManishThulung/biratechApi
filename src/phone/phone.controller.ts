@@ -119,7 +119,6 @@ export class PhoneController {
     const imageuploadUrl = await this.imageUploadService.uploadImage(
       file?.path,
     );
-    console.log(imageuploadUrl, 'imageuploadUrl');
     return this.phoneService.newPhone(phone, req.user, imageuploadUrl);
   }
 

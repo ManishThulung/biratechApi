@@ -92,7 +92,7 @@ export class PhoneService {
       where: {
         id,
       },
-      relations: ['author', 'review'],
+      relations: ['author', 'review', 'comments', 'comments.author'],
     });
   }
 
@@ -148,13 +148,11 @@ export class PhoneService {
       }
       return phone;
     });
-
     return gamingPhones.filter(Boolean);
   }
 
   async trendingPhones(): Promise<Phone[]> {
     const phones = await this.phoneRepository.find({ relations: ['ratings'] });
-
     const trendingPhones: Phone[] = phones.map((phone): Phone => {
       const totalRatings = phone.ratings.length;
       const sumOfRatings = phone.ratings.reduce(
@@ -162,14 +160,12 @@ export class PhoneService {
         0,
       );
       const overallRating = sumOfRatings / totalRatings;
-
       if (overallRating <= 3 || isNaN(overallRating)) {
         console.log(phone, 'phone');
         return;
       }
       return phone;
     });
-
     return trendingPhones.filter(Boolean);
   }
 

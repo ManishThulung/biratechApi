@@ -12,6 +12,7 @@ import { ImageuploadService } from './imageupload/imageupload.service';
 import { RecommendationModule } from './recommendation/recommendation.module';
 import { MailModule } from './mail/mail.module';
 import { RatingModule } from './rating/rating.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { RatingModule } from './rating/rating.module';
     RecommendationModule,
     MailModule,
     RatingModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService, HashService, ImageuploadService],

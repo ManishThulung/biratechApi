@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Role } from '../users/utils/role.enum';
 import { PhoneEntity } from 'src/entity/phone.entity';
 import { Exclude } from 'class-transformer';
+import { CommentEntity } from './comment.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -30,6 +31,9 @@ export class UserEntity {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.author)
+  comment: CommentEntity[];
 
   @OneToMany(() => PhoneEntity, (phone) => phone.author)
   phones: PhoneEntity[];
