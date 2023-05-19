@@ -11,7 +11,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: newUser.email,
       from: 'biratechinfo@gmail.com',
-      subject: 'Welcome to Nice App! Confirm your Email',
+      subject: 'Confirm your Email',
       template: './confirmation',
       context: {
         name: newUser.name,

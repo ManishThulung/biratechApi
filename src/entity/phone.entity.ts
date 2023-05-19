@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { ReviewEntity } from './review.entity';
 import { RatingEntity } from './rating.entity';
+import { CommentEntity } from './comment.entity';
 
 @Entity('phones')
 export class PhoneEntity {
@@ -34,10 +35,7 @@ export class PhoneEntity {
   @Column()
   price: number;
 
-  @Column({ name: 'is_gaming', default: false })
-  isGaming: boolean;
-
-  @Column({ name: 'release_date', nullable: true })
+  @Column({ name: 'release_date', nullable: true, type: 'date' })
   releaseDate: Date;
 
   @Column({ nullable: true })
@@ -49,6 +47,9 @@ export class PhoneEntity {
   @OneToOne(() => ReviewEntity)
   @JoinColumn()
   review: ReviewEntity;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.phone)
+  comments: CommentEntity[];
 
   @ManyToOne(() => UserEntity, (user) => user.phones)
   author: UserEntity;

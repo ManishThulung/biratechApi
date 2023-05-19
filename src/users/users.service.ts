@@ -52,7 +52,7 @@ export class UsersService {
         },
       });
       if (existUser && existUser.is_verified) {
-        return 'User already exist,Please login instead';
+        return { message: 'User already exist,Please login instead' };
       }
       const hashPassword = await this.hashService.hashPassword(password);
       const currentTime = Date.now();
@@ -67,7 +67,10 @@ export class UsersService {
         verify_token: token,
       });
       await this.mailService.sendUserConfirmation(newUser);
-      return 'Email Confirmation has been sent to your email address, Plase verify';
+      return {
+        message:
+          'Email Confirmation has been sent to your email address, Plase verify',
+      };
     } catch (error) {
       throw new HttpException('Error occurred!', HttpStatus.BAD_REQUEST);
     }

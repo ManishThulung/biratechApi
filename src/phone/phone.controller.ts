@@ -83,6 +83,10 @@ export class PhoneController {
   trendingPhones() {
     return this.phoneService.trendingPhones();
   }
+  @Get('/latest')
+  latestPhones() {
+    return this.phoneService.latestPhones();
+  }
 
   @Get('/compare')
   comparePhone(@Query() phones: QueryValidate) {
@@ -115,7 +119,6 @@ export class PhoneController {
     const imageuploadUrl = await this.imageUploadService.uploadImage(
       file?.path,
     );
-    console.log(imageuploadUrl, 'imageuploadUrl');
     return this.phoneService.newPhone(phone, req.user, imageuploadUrl);
   }
 
