@@ -11,14 +11,15 @@ import {
 import { ReviewEntity } from './review.entity';
 import { RatingEntity } from './rating.entity';
 import { CommentEntity } from './comment.entity';
+import { CompanyEntity } from './company.entity';
 
 @Entity('phones')
 export class PhoneEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  company: string;
+  // @Column({ nullable: true })
+  // company: string;
 
   @Column()
   name: string;
@@ -40,6 +41,11 @@ export class PhoneEntity {
 
   @Column({ nullable: true })
   photo: string;
+
+  @ManyToOne(() => CompanyEntity, (company) => company.phone, {
+    nullable: true,
+  })
+  company: string;
 
   @OneToMany(() => RatingEntity, (rating) => rating.phone)
   ratings: RatingEntity[];

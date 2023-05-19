@@ -4,9 +4,9 @@ import { ReviewEntity } from 'src/entity/review.entity';
 import { UserEntity } from 'src/entity/user.entity';
 
 export class phoneDto {
-  @IsNotEmpty()
-  @MinLength(3)
-  company: string;
+  // @IsNotEmpty()
+  // @MinLength(3)
+  // company: string;
 
   @IsNotEmpty()
   @MinLength(3)

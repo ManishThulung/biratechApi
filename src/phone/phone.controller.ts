@@ -44,7 +44,7 @@ export class PhoneController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('name') name?: string | '',
-    @Query('company') company?: string | '',
+    // @Query('company') company?: string | '',
     @Query('memory') memory?: string | '',
     // @Query('battery') battery: string | '',
     // @Query('camera') camera: string | '',
@@ -65,7 +65,8 @@ export class PhoneController {
           limit: Number(limit),
           route: 'http://localhost:4000/api/phones/search',
         },
-        { name, memory, company, price },
+        { name, memory, price },
+        // { name, memory, company, price },
       );
     }
   }

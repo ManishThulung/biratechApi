@@ -12,6 +12,7 @@ import {
 import { Phone } from 'src/utils/phone.type';
 import { Observable, from, map } from 'rxjs';
 import { MoreThanOrEqual } from 'typeorm';
+import { CompanyEntity } from 'src/entity/company.entity';
 
 @Injectable()
 export class PhoneService {
@@ -20,6 +21,8 @@ export class PhoneService {
     private phoneRepository: Repository<PhoneEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(CompanyEntity)
+    private companyRepository: Repository<CompanyEntity>,
   ) {}
 
   getPhones() {
@@ -51,7 +54,7 @@ export class PhoneService {
           {
             name: ILike(`%${phone.name}%`),
             memory: ILike(`%${phone.memory}%`),
-            company: ILike(`%${phone.company}%`),
+            // company: ILike(`%${phone.company}%`),
             price: MoreThanOrEqual(minPrice),
             // battery: ILike(`%${phone.battery}%`),
             // camera: ILike(`%${phone.camera}%`),
@@ -195,7 +198,7 @@ export class PhoneService {
     return { phone1, phone2 };
   }
 
-  async newPhone(phone: phoneDto, user: any, imageuploadUrl: string) {
+  async newPhone(phone: any, user: any, imageuploadUrl: string) {
     const { email } = user;
     try {
       const userDetail = await this.userRepository.findOne({
@@ -203,8 +206,14 @@ export class PhoneService {
           email,
         },
       });
+      const company = await this.companyRepository.findOne({
+        where: {
+          company: phone.company,
+        },
+      });
       phone.author = userDetail;
       phone.photo = imageuploadUrl;
+      phone.company = company;
       await this.phoneRepository.save(phone);
       return 'Phone added successfully';
     } catch (error) {
