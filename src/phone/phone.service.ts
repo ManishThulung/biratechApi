@@ -188,6 +188,15 @@ export class PhoneService {
     }
   }
 
+  async companyPhones(company: string) {
+    const phone = await this.companyRepository.findOne({
+      where: { company: ILike(`%${company}%`) },
+      relations: ['phone'],
+    });
+
+    return phone.phone;
+  }
+
   async comparePhone(phoneOne: string, phoneTwo: string) {
     const phone1 = await this.phoneRepository.findOne({
       where: { name: ILike(`%${phoneOne}%`) },

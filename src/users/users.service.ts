@@ -12,6 +12,7 @@ import { HashService } from 'src/helper/hash.service';
 import { UpdateUser } from './utils/type';
 import { MailService } from 'src/mail/mail.service';
 import { v4 as uuidv4 } from 'uuid';
+import { Role } from './utils/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,24 @@ export class UsersService {
     private readonly hashService: HashService,
     private readonly mailService: MailService,
   ) {}
+
+  async changeRole(id: number, role: any) {
+    try {
+      const user = this.userRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      if (!user) throw new UnprocessableEntityException('User not found!');
+
+      (await user).role = role;
+
+      await this.userRepository.update(id, await user);
+      return { message: 'Role updated successfully' };
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   getUsers() {
     return this.userRepository.find();

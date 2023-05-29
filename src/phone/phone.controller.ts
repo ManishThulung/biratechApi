@@ -71,28 +71,31 @@ export class PhoneController {
     }
   }
 
-  @Get('/upcomming')
+  @Get('/category/upcomming')
   upcommingPhones() {
     return this.phoneService.upcommingPhones();
   }
 
-  @Get('/gaming')
+  @Get('/category/gaming')
   gamingPhones() {
     return this.phoneService.gamingPhones();
   }
-  @Get('/trending')
+  @Get('/category/trending')
   trendingPhones() {
     return this.phoneService.trendingPhones();
   }
-  @Get('/latest')
+  @Get('/category/latest')
   latestPhones() {
     return this.phoneService.latestPhones();
   }
+  @Get('/category/:company')
+  companyPhones(@Param('company') company: string) {
+    return this.phoneService.companyPhones(company);
+  }
 
-  @Get('/compare')
-  comparePhone(@Query() phones: QueryValidate) {
+  @Post('/compare')
+  comparePhone(@Body() phones: QueryValidate) {
     const { phoneOne, phoneTwo } = phones;
-
     return this.phoneService.comparePhone(phoneOne, phoneTwo);
   }
 
