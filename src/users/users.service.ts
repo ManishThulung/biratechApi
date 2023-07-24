@@ -140,7 +140,7 @@ export class UsersService {
       });
       if (!user) throw new UnprocessableEntityException('User not found!');
       await this.userRepository.delete(id);
-      return 'User deleted successfully';
+      return [{ message: 'User Deleted Successfully' }];
     } catch (error) {
       console.log(error);
     }

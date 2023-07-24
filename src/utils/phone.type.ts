@@ -8,7 +8,9 @@ export type Phone = {
   memory?: string;
   battery?: string;
   photo?: string | null;
-  price?: number;
+  minPrice?: number;
+  maxPrice?: number;
+
   releaseDate?: Date;
   // author: UserEntity;
 };
