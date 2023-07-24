@@ -67,10 +67,11 @@ export class UsersController {
   @Post('/login')
   async login(@Request() req) {
     const result = await this.authService.login(req.user);
-    const token = {
-      access_token: result.access_token,
-    };
-    return token;
+    // const token = {
+    //   // access_token: result.access_token,
+    //   access_token: result,
+    // };
+    return result;
   }
 
   @Put(':id')

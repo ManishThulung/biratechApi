@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { Between, ILike, MoreThan, Repository } from 'typeorm';
+import { Any, Between, ILike, MoreThan, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
 import {
@@ -43,7 +43,8 @@ export class PhoneService {
     phone: Phone,
   ): Observable<Pagination<Phone>> {
     const pageNumber = Number(options.page) - 1;
-    const minPrice = Number(phone.price);
+    const minPrice = Number(phone.minPrice) || 20000;
+    const maxPrice = Number(phone.maxPrice) || 120000;
     return from(
       this.phoneRepository.findAndCount({
         skip: pageNumber * Number(options.limit) || 0,
@@ -55,9 +56,10 @@ export class PhoneService {
             name: ILike(`%${phone.name}%`),
             memory: ILike(`%${phone.memory}%`),
             // company: ILike(`%${phone.company}%`),
-            price: MoreThanOrEqual(minPrice),
-            // battery: ILike(`%${phone.battery}%`),
-            // camera: ILike(`%${phone.camera}%`),
+            price: Between(minPrice, maxPrice),
+            // price: MoreThanOrEqual(minPrice),
+            battery: ILike(`%${phone.battery}%`),
+            camera: ILike(`%${phone.camera}%`),
           },
         ],
       }),
@@ -195,6 +197,13 @@ export class PhoneService {
     });
 
     return phone.phone;
+  }
+  async similarPhones(phoneName: string) {
+    const phone = await this.phoneRepository.findAndCount({
+      where: [{ name: ILike(`%${phoneName}%`) }],
+    });
+
+    return phone;
   }
 
   async comparePhone(phoneOne: string, phoneTwo: string) {

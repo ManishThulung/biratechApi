@@ -46,9 +46,11 @@ export class PhoneController {
     @Query('name') name?: string | '',
     // @Query('company') company?: string | '',
     @Query('memory') memory?: string | '',
-    // @Query('battery') battery: string | '',
-    // @Query('camera') camera: string | '',
-    @Query('price') price?: number | 20000,
+    @Query('battery') battery?: string | '',
+    @Query('camera') camera?: string | '',
+    // @Query('price') price?: [number, number] | [20000, 120000],
+    @Query('minPrice') minPrice?: number | 20000,
+    @Query('maxPrice') maxPrice?: number | 120000,
   ): Observable<Pagination<Phone>> {
     limit = limit > 50 ? 50 : limit;
 
@@ -65,7 +67,7 @@ export class PhoneController {
           limit: Number(limit),
           route: 'http://localhost:4000/api/phones/search',
         },
-        { name, memory, price },
+        { name, memory, battery, camera, minPrice, maxPrice },
         // { name, memory, company, price },
       );
     }
@@ -91,6 +93,10 @@ export class PhoneController {
   @Get('/category/:company')
   companyPhones(@Param('company') company: string) {
     return this.phoneService.companyPhones(company);
+  }
+  @Get('/similar/:phone')
+  similarPhones(@Param('phone') name: string) {
+    return this.phoneService.similarPhones(name);
   }
 
   @Post('/compare')

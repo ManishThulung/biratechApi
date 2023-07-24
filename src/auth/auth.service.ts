@@ -45,6 +45,7 @@ export class AuthService {
         secret: process.env.ACCESS_TOKEN_SECRET,
       }),
       role: user.role,
+      id: user.id,
     };
   }
 }
