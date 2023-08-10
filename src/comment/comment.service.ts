@@ -21,6 +21,17 @@ export class CommentService {
     return this.commentRepository.find({ relations: ['author'] });
   }
 
+  async getCommentsById(id: number) {
+    const phone = await this.phoneRepository.find({
+      where: {
+        id,
+      },
+      relations: ['comments', 'comments.author'],
+    });
+    // console.log(phone.id, 'phone');
+    return phone[0].comments;
+  }
+
   async createComment(phoneId: number, value: CommentDto, userId: number) {
     const phone = await this.phoneRepository.findOne({
       where: {

@@ -32,6 +32,9 @@ export class RatingService {
   }
 
   async getRating(id: number) {
+    const data = {
+      rating: 0,
+    };
     const phone = await this.phoneRepository.findOne({
       where: {
         id,
@@ -39,7 +42,7 @@ export class RatingService {
       relations: ['ratings'],
     });
     if (!phone || !phone.ratings || phone.ratings.length === 0) {
-      return 0; // Return 0 if no ratings or phone found
+      return data; // Return 0 if no ratings or phone found
     }
 
     const totalRatings = phone.ratings.length;
@@ -49,6 +52,7 @@ export class RatingService {
     );
 
     const overallRating = sumOfRatings / totalRatings;
-    return overallRating;
+    data.rating = overallRating;
+    return data;
   }
 }

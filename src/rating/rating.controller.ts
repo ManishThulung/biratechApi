@@ -22,9 +22,6 @@ export class RatingController {
   @UsePipes(new ValidationPipe())
   @Post('/create/:id')
   createRating(@Param('id') phoneId: number, @Body() value: RatingDto) {
-    console.log(value, 'controller value');
-    console.log(phoneId, 'controller value');
-
     return this.ratingService.createRating(phoneId, value);
   }
 }
