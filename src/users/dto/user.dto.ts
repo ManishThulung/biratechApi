@@ -12,3 +12,6 @@ export class RegisterDto {
   @MinLength(3)
   password: string;
 }
+export class DeleteUserDto {
+  id: number;
+}

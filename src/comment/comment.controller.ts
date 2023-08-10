@@ -20,6 +20,11 @@ export class CommentController {
     return this.commentService.getSinglePhoneComments();
   }
 
+  @Get('/phone/:id')
+  getCommentsById(@Param('id') id: number) {
+    return this.commentService.getCommentsById(id);
+  }
+
   @UseGuards(JwtGuard)
   @Post('/create/:id')
   createComment(

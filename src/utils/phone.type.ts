@@ -29,3 +29,12 @@ export type FilterQueryValidate = {
   camera?: string;
   price?: [number, number];
 };
+
+export type UserInterest = {
+  name?: string;
+  memory?: string;
+  battery?: string;
+  price?: number;
+  display?: string;
+  camera?: string;
+};

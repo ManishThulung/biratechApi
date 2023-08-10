@@ -12,20 +12,20 @@ export class UserPreferenceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('simple-array', { nullable: true, array: true })
-  company: string[];
+  @Column({ nullable: true })
+  company: string;
 
-  @Column('integer', { nullable: true, array: true })
-  price: number[];
+  @Column('integer', { nullable: true })
+  price: number;
 
-  @Column('simple-array', { nullable: true, array: true })
-  memory: string[];
+  @Column({ nullable: true })
+  memory: string;
 
-  @Column('simple-array', { nullable: true, array: true })
-  camera: string[];
+  @Column({ nullable: true })
+  camera: string;
 
-  @Column('simple-array', { nullable: true, array: true })
-  battery: string[];
+  @Column({ nullable: true })
+  battery: string;
 
   @OneToOne(() => UserEntity)
   @JoinColumn()
