@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../entity/user.entity';
+// import { UserEntity } from '../entity/user.entity';
 import { HashService } from 'src/helper/hash.service';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalStrategy } from 'src/auth/local.strategy';
@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { MailModule } from 'src/mail/mail.module';
 import { MailService } from 'src/mail/mail.service';
 import { UsersController } from './users.controller';
+import { UserEntity } from 'src/entity/user.entity';
 
 @Module({
   imports: [MailModule, TypeOrmModule.forFeature([UserEntity])],
