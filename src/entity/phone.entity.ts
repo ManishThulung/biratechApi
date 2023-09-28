@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/entity/user.entity';
+// import { UserEntity } from 'src/entity/user.entity';
 import {
   Column,
   Entity,
@@ -12,6 +12,7 @@ import { ReviewEntity } from './review.entity';
 import { RatingEntity } from './rating.entity';
 import { CommentEntity } from './comment.entity';
 import { CompanyEntity } from './company.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('phones')
 export class PhoneEntity {
@@ -32,6 +33,30 @@ export class PhoneEntity {
 
   @Column()
   battery: string;
+
+  @Column({ nullable: true })
+  display: string;
+
+  @Column({ nullable: true })
+  processor: string;
+
+  @Column({ nullable: true })
+  os: string;
+
+  @Column({ nullable: true })
+  packageContains: string;
+
+  @Column({ nullable: true })
+  sensors: string;
+
+  @Column({ nullable: true })
+  network: string;
+
+  @Column({ nullable: true })
+  securityAuthentication: string;
+
+  @Column({ nullable: true })
+  nfc: string;
 
   @Column()
   price: number;

@@ -28,7 +28,7 @@ export class RatingService {
     rating.value = value.value;
     rating.phone = phone;
     await this.ratingRepository.save(rating);
-    return 'Rating submitted successfully';
+    return { message: 'Rating submitted successfully' };
   }
 
   async getRating(id: number) {

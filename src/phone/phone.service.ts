@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneEntity } from 'src/entity/phone.entity';
-import { Any, Between, ILike, MoreThan, Repository } from 'typeorm';
+import { Between, ILike, MoreThan, Repository } from 'typeorm';
 import { phoneDto } from './dto/phone.dto';
 import { UserEntity } from 'src/entity/user.entity';
 import {
@@ -11,7 +11,6 @@ import {
 } from 'nestjs-typeorm-paginate';
 import { Phone } from 'src/utils/phone.type';
 import { Observable, from, map } from 'rxjs';
-import { MoreThanOrEqual } from 'typeorm';
 import { CompanyEntity } from 'src/entity/company.entity';
 
 @Injectable()
@@ -27,6 +26,16 @@ export class PhoneService {
 
   getPhones() {
     return this.phoneRepository.find();
+  }
+
+  async getAllPhonesName() {
+    const phones: PhoneEntity[] = await this.phoneRepository.find();
+    const phonesNameArray = phones.map((item) => item.name);
+    const phonesName = phonesNameArray.map((name) => ({
+      value: name,
+      label: name,
+    }));
+    return phonesName;
   }
 
   // async paginate(
@@ -48,7 +57,7 @@ export class PhoneService {
     return from(
       this.phoneRepository.findAndCount({
         skip: pageNumber * Number(options.limit) || 0,
-        take: Number(options.limit) || 10,
+        take: Number(options.limit) || 30,
         order: { id: 'ASC' },
         // select: ['id', 'name', 'battery', 'camera', 'memory'],
         where: [
@@ -97,38 +106,36 @@ export class PhoneService {
       where: {
         id,
       },
-      relations: ['author', 'review', 'comments', 'comments.author'],
+      relations: ['author', 'review', 'comments', 'comments.author', 'ratings'],
     });
   }
 
   // binary search
-  // async getPhoneById(id: number): Promise<PhoneEntity | undefined> {
-  //   let left = 0;
-  //   let right = (await this.phoneRepository.count()) - 1;
-  //   console.log(right);
+  async getPhoneByIdBinaySearch(id: number): Promise<PhoneEntity | undefined> {
+    let left = 0;
+    let right = (await this.phoneRepository.count()) - 1;
+    while (left <= right) {
+      const middle = Math.floor((left + right) / 2);
 
-  //   while (left <= right) {
-  //     const middle = Math.floor((left + right) / 2);
+      const phone = await this.phoneRepository.findOne({
+        where: {
+          id: middle,
+        },
+        relations: ['author', 'review'],
+      });
 
-  //     const phone = await this.phoneRepository.findOne({
-  //       where: {
-  //         id: middle,
-  //       },
-  //       relations: ['author', 'review'],
-  //     });
+      if (phone && phone.id === id) {
+        return phone;
+      } else if (phone && phone.id < id) {
+        left = middle + 1;
+      } else {
+        right = middle - 1;
+      }
+    }
 
-  //     if (phone && phone.id === id) {
-  //       return phone;
-  //     } else if (phone && phone.id < id) {
-  //       left = middle + 1;
-  //     } else {
-  //       right = middle - 1;
-  //     }
-  //   }
-
-  //   // return 'Phone not found!';
-  //   return undefined;
-  // }
+    // return 'Phone not found!';
+    return undefined;
+  }
 
   async upcommingPhones(): Promise<Phone[]> {
     const phones = await this.phoneRepository.find({
@@ -166,7 +173,6 @@ export class PhoneService {
       );
       const overallRating = sumOfRatings / totalRatings;
       if (overallRating <= 3 || isNaN(overallRating)) {
-        console.log(phone, 'phone');
         return;
       }
       return phone;

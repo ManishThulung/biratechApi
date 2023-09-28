@@ -39,6 +39,11 @@ export class PhoneController {
     return this.phoneService.getPhones();
   }
 
+  @Get('/all')
+  getAllPhonesName() {
+    return this.phoneService.getAllPhonesName();
+  }
+
   @Get('/search')
   paginateFilter(
     @Query('page') page = 1,
